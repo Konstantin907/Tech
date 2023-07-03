@@ -1,28 +1,15 @@
-# .github/workflows/netlify.yml
-name: Build and Deploy to Netlify
-on:
-  push:
-  pull_request:
+name: deploy website
+on: [pull_request]
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-
-      # ( Build to ./dist or other directory... )
-
-      - name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v2.0
+      - uses: actions/checkout@v2
+      #  your build commands
+      - run: |
+         ng build --prod
+      - uses: amondnet/vercel-action@v20 #deploy
         with:
-          publish-dir: './dist'
-          production-branch: master
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "Deploy from GitHub Actions"
-          enable-pull-request-comment: false
-          enable-commit-comment: true
-          overwrites-pull-request-comment: true
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        timeout-minutes: 1
-        
+          vercel-token: ${{ secrets.VERCEL_TOKEN }} # Required
+          vercel-org-id: ${{ secrets.ORG_ID}}  #Required
+          vercel-project-id: ${{ secrets.PROJECT_ID}} #Required 
