@@ -10,7 +10,7 @@ jobs:
 
       - name: Build
         run: |
-          ng build --prod
+          npm run start
 
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v20
